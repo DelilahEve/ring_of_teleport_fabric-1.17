@@ -87,11 +87,11 @@ public class ItemRingTeleport extends Item
     //Get stored BlockPos, if it exists
     public static BlockPos getPosition(ItemStack stack)
     {
-        NbtCompound tags = stack.getTag();
+        NbtCompound tags = stack.getNbt();
 
-        if (stack.hasTag() && tags.contains("pos"))
+        if (stack.hasNbt() && tags.contains("pos"))
         {
-            NbtCompound subTags = stack.getOrCreateSubTag("pos");
+            NbtCompound subTags = stack.getOrCreateSubNbt("pos");
             return NbtHelper.toBlockPos(subTags);
         }
         else
@@ -103,11 +103,11 @@ public class ItemRingTeleport extends Item
     //Get stored dimension, if exists
     public static String getDimension(ItemStack stack)
     {
-        NbtCompound tags = stack.getTag();
+        NbtCompound tags = stack.getNbt();
 
-        if (stack.hasTag() && tags.contains("dim"))
+        if (stack.hasNbt() && tags.contains("dim"))
         {
-            return stack.getTag().getString("dim");
+            return stack.getNbt().getString("dim");
         }
         else
         {
@@ -122,13 +122,13 @@ public class ItemRingTeleport extends Item
 
         NbtCompound tags;
 
-        if (!stack.hasTag())
+        if (!stack.hasNbt())
         {
             tags = new NbtCompound();
         }
         else
         {
-            tags = stack.getTag();
+            tags = stack.getNbt();
         }
 
         if (pos == null) // not pointing at a block will clear the NBT
@@ -145,7 +145,7 @@ public class ItemRingTeleport extends Item
             if(registryKey == World.END) tags.putString("dim", "The End");
         }
 
-        stack.setTag(tags);
+        stack.setNbt(tags);
     }
 
     public void teleport(PlayerEntity player, World world, ItemStack stack)
@@ -164,15 +164,15 @@ public class ItemRingTeleport extends Item
         boolean unknownWorld = false;
 
         // Check stored DIM with current dim the player is in
-        if((stack.getTag().getString("dim").contains("Overworld")))
+        if((stack.getNbt().getString("dim").contains("Overworld")))
         {
             destWorld = overWorld;
         }
-        else if((stack.getTag().getString("dim").contains("The Nether")))
+        else if((stack.getNbt().getString("dim").contains("The Nether")))
         {
             destWorld = netherWorld;
         }
-        else if((stack.getTag().getString("dim").contains("The End")))
+        else if((stack.getNbt().getString("dim").contains("The End")))
         {
             destWorld = endWorld;
         }
@@ -200,10 +200,10 @@ public class ItemRingTeleport extends Item
 
     public String getLocationString(ItemStack stack)
     {
-        int storedX = stack.getOrCreateSubTag("pos").getInt("X");
-        int storedY = stack.getOrCreateSubTag("pos").getInt("Y");
-        int storedZ = stack.getOrCreateSubTag("pos").getInt("Z");
-        String storedWorld = stack.getTag().getString("dim");
+        int storedX = stack.getOrCreateSubNbt("pos").getInt("X");
+        int storedY = stack.getOrCreateSubNbt("pos").getInt("Y");
+        int storedZ = stack.getOrCreateSubNbt("pos").getInt("Z");
+        String storedWorld = stack.getNbt().getString("dim");
         String displayInfo = storedWorld  + "  x: " + storedX + " y: " + storedY + " z: " + storedZ;
 
         return displayInfo;
