@@ -1,8 +1,7 @@
 {
-	"item.ring_of_teleport.ring_of_teleport": "Ring of Teleport",
-
-	"item.ring_of_teleport.ring_of_teleport": "Ring of Teleport",
-	"item.ring_of_teleport.ring_of_teleport.tip1": "Teleport to stored locations",
+	"item.ring_of_teleport.ring_of_teleport": "Ring of Teleport (Obsolete)",
+	"item.ring_of_teleport.ring_of_teleport2": "Ring of Teleport",
+	"item.ring_of_teleport.ring_of_teleport.tip1": "Teleport to stored location",
 	"item.ring_of_teleport.ring_of_teleport.tip2": "Sneak + right-click on top of a block to set",
 	"item.ring_of_teleport.ring_of_teleport.tip3": "Sneak + right-click pointing up in the air to clear",
 	"item.ring_of_teleport.ring_of_teleport.tip4": "Right-click to teleport",
@@ -10,7 +9,7 @@
 	"item.ring_of_teleport.ring_of_teleport.tip6": "Location has been set to: %s",
 	"item.ring_of_teleport.ring_of_teleport.tip7": "Location already set to: %s",
 	"item.ring_of_teleport.ring_of_teleport.tip8": "Location cleared.",
-	"item.ring_of_teleport._ring_of_teleport.tip9": "Unsupported dimension",
+	"item.ring_of_teleport.ring_of_teleport.tip9": "Unsupported dimension",
 		
 	"itemGroup.ring_of_teleport": "Ring of Teleport"
 }
