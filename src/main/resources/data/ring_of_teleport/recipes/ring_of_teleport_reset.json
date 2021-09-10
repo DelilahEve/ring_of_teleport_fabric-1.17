@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ring_of_teleport:ring_of_teleport"
+    }
+  ],
+  "result": {
+    "item": "ring_of_teleport:ring_of_teleport",
+    "count": 1
+  }
+}
