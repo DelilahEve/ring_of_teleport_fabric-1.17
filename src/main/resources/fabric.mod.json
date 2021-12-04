@@ -13,7 +13,7 @@
     "sources": "https://github.com/kwpugh/ring_of_teleport_fabric-1.17"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/ring_of_teleport/textures/item/ring_of_teleport.png",
 
   "environment": "*",
@@ -27,7 +27,7 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.12.6",
+    "fabricloader": ">=0.12.8",
     "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"
