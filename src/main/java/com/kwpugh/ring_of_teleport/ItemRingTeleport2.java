@@ -2,6 +2,7 @@ package com.kwpugh.ring_of_teleport;
 
 import java.util.List;
 
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,8 +19,10 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
 public class ItemRingTeleport2 extends Item
@@ -151,24 +154,49 @@ public class ItemRingTeleport2 extends Item
 
         BlockPos pos = getPosition(stack);
         String dim = getDimension(stack);
-        RegistryKey<World> registryKey = world.getRegistryKey();
-        ServerWorld serverWorld = ((ServerWorld)world).getServer().getWorld(registryKey);  //current world the player is in
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 
         // Build world to test from stored data
         RegistryKey<World> storedKey = RegistryKey.of(Registry.WORLD_KEY, new Identifier(dim));
         ServerWorld storedWorld = ((ServerWorld)world).getServer().getWorld(storedKey);
 
-        // Compare current world with stored world
-        if(serverWorld == storedWorld)
-        {
-            serverPlayer.requestTeleport(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
-            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+        if (storedWorld == null || pos == null) {
+            serverPlayer.sendMessage(
+                new TranslatableText("item.ring_of_teleport.ring_of_teleport.tip9"),
+                true
+            );
+        } else {
+            TeleportTarget target = new TeleportTarget(
+                    new Vec3d(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F),
+                    new Vec3d(0, 0, 0),
+                    serverPlayer.getYaw(),
+                    serverPlayer.getPitch()
+            );
+            doTeleport(serverPlayer, storedWorld, target);
+            world.playSound(
+                    null,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT,
+                    SoundCategory.PLAYERS,
+                    1.0F,
+                    1.0F
+            );
         }
-        else
-        {
-            serverPlayer.teleport(storedWorld, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, serverPlayer.getYaw(), serverPlayer.getPitch());
-            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+    }
+
+    private void doTeleport(ServerPlayerEntity player, ServerWorld world, TeleportTarget target) {
+        if (player.world.getRegistryKey().equals(world.getRegistryKey())) {
+            player.networkHandler.requestTeleport(
+                    target.position.getX(),
+                    target.position.getY(),
+                    target.position.getZ(),
+                    target.yaw,
+                    target.pitch
+            );
+        } else {
+            FabricDimensions.teleport(player, world, target);
         }
     }
 
